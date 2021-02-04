@@ -1,0 +1,53 @@
+html {
+    pointer-events: none;
+    background-color: rgb(28, 29, 30);
+}
+
+body {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main {
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    background-color: rgb(28, 29, 30);
+    box-shadow: 0 0 32px rgb(0, 0, 0, 0.6);
+}
+
+p {
+    color: rgb(140, 140, 140);
+    margin: 0;
+    font-family: monospace;
+    font-size: 16px;
+    line-height: 1;
+    user-select: none;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.1s linear;
+}
+
+p span.info {
+    float: right;
+}
+
+main:hover p {
+    color: rgb(240, 240, 240);
+}
+
+canvas {
+    margin: 20px 0;
+    display: block;
+    background-color: rgb(17, 18, 18);
+    image-rendering: pixelated;
+    pointer-events: auto;
+}

@@ -1,0 +1,17 @@
+{
+    "root": true,
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "env": {
+        "browser": true,
+        "es2020": true
+    },
+    "rules": {
+        "comma-dangle": ["error", "never"],
+        "indent": ["error", 4],
+        "quotes": ["error", "double"],
+        "semi": ["error", "never"]
+    }
+}

@@ -85,9 +85,9 @@ function initialize() {
         state.points[i] = 0.0
     }
 
-    state.modulators[0] = createModulator("sine", 0.5, 0.8)
-    state.modulators[0].amplitudeModulator = createModulator("sine", 0.4, 0.5)
-    state.modulators[0].frequencyModulator = createModulator("sine", 0.2, 0.5)
+    state.modulators[0] = createModulator("sine", 0.01, 0.8)
+    state.modulators[0].amplitudeModulator = createModulator("sine", 0.4, 0.8)
+    state.modulators[0].frequencyModulator = createModulator("sine", 0.8, 0.5)
 
     resize()
     render(state)
@@ -173,6 +173,7 @@ function render(state) {
     canvasContext.fillStyle = "rgb(17, 18, 18)"
     canvasContext.fillRect(0, 0, canvasWidth, canvasHeight)
     canvasContext.strokeStyle = "rgb(180, 160, 120)"
+    canvasContext.fillStyle = "rgba(180, 160, 120, 0.2)"
     canvasContext.lineCap = "round"
     canvasContext.lineWidth = 4
     canvasContext.beginPath()
@@ -190,6 +191,10 @@ function render(state) {
     }
 
     canvasContext.stroke()
+    canvasContext.lineTo(canvasWidth - 1, canvasHeight - 1)
+    canvasContext.lineTo(0, canvasHeight - 1)
+    canvasContext.closePath()
+    canvasContext.fill()
 }
 
 initialize()

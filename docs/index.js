@@ -26,11 +26,8 @@ undefined
 
 const canvasWidth = 480
 const canvasHeight = 320
-const canvasFrameRate = 60
 const canvasElement = document.querySelector("canvas")
-const canvasContext = canvasElement.getContext("2d", {
-    desynchronized: true
-})
+const canvasContext = canvasElement.getContext("2d")
 const infoElement = document.querySelector("span.info")
 
 /**

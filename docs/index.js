@@ -25,9 +25,9 @@ undefined
  */
 undefined
 
-const canvasWidth = 640
-const canvasHeight = 400
-const canvasFrameRate = 15
+const canvasWidth = 480
+const canvasHeight = 320
+const canvasFrameRate = 60
 const canvasElement = document.querySelector("canvas")
 const canvasContext = canvasElement.getContext("2d", {
     desynchronized: true
@@ -151,6 +151,23 @@ function update(state) {
         state.phase = 0
         state.time = (window.performance.now() - state.timebase) * 0.001
 
+        for (let i = 0; i < state.points.length; i ++) {
+            let value = 0.0
+            let phase = (1.0 / state.points.length) * i
+
+            for (let j = 0; j < state.modulators.length; j ++) {
+                value = value + state.modulators[j].sample(state.time + phase)
+            }
+
+            if (value < -0.9) {
+                value = -0.9
+            } else if (value > 0.9) {
+                value = 0.9
+            }
+
+            state.points[i] = value
+        }
+
         render(state)
 
         infoElement.innerText = state.time.toFixed(2)
@@ -165,27 +182,24 @@ function update(state) {
 function render(state) {
     canvasContext.fillStyle = "rgb(17, 18, 18)"
     canvasContext.fillRect(0, 0, canvasWidth, canvasHeight)
-    canvasContext.fillStyle = "rgb(180, 160, 120)"
+    canvasContext.strokeStyle = "rgb(180, 160, 120)"
+    canvasContext.lineCap = "round"
+    canvasContext.lineWidth = 4
+    canvasContext.beginPath()
 
     for (let i = 0; i < state.points.length; i ++) {
-        let value = 0.0
-        let phase = (1.0 / state.points.length) * i
-
-        for (let j = 0; j < state.modulators.length; j ++) {
-            value = value + state.modulators[j].sample(state.time + phase)
-        }
-
-        if (value < -0.9) {
-            value = -0.9
-        } else if (value > 0.9) {
-            value = 0.9
-        }
-
         let x = i
-        let y = ((canvasHeight * 0.5) + (canvasHeight * 0.5 * value)) | 0
+        let y = ((canvasHeight * 0.5) + (canvasHeight * 0.5 * state.points[i])) | 0
 
-        canvasContext.fillRect(x - 2, y - 2, 5, 5)
+        if (i === 0) {
+            canvasContext.moveTo(x, y)
+            continue
+        }
+
+        canvasContext.lineTo(x, y)
     }
+
+    canvasContext.stroke()
 }
 
 initialize()

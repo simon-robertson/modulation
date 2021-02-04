@@ -18,6 +18,8 @@ undefined
  * @typedef {object} State
  * @property {number} time
  * @property {number} timebase
+ * @property {number} timeDirection
+ * @property {number} timeSpeed
  * @property {boolean} running
  * @property {number[]} points
  * @property {Modulator[]} modulators
@@ -77,6 +79,8 @@ function initialize() {
     let state = {
         time: 0,
         timebase: 0,
+        timeDirection: 1,
+        timeSpeed: 1,
         points: [],
         modulators: []
     }
@@ -96,6 +100,16 @@ function initialize() {
     let mainElement = document.querySelector("main")
 
     mainElement.hidden = false
+    mainElement.addEventListener("click", (event) => {
+        if (event.isTrusted && event.button === 0) {
+            if (event.shiftKey) {
+                state.timeSpeed = state.timeSpeed === 1 ? 4 : 1
+                return
+            }
+
+            state.timeDirection = state.timeDirection === 1 ? -1 : 1
+        }
+    })
 
     window.addEventListener("resize", (event) => {
         if (event.isTrusted) {
@@ -142,7 +156,8 @@ function update(state) {
         return
     }
 
-    state.time = (window.performance.now() - state.timebase) * 0.001
+    state.time = state.time + (window.performance.now() - state.timebase) * 0.001 * state.timeDirection * state.timeSpeed
+    state.timebase = window.performance.now()
 
     for (let i = 0; i < state.points.length; i ++) {
         let value = 0.0

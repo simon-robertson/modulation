@@ -26,7 +26,7 @@ undefined
 undefined
 
 const canvasWidth = 320
-const canvasHeight = 240
+const canvasHeight = 200
 const canvasFrameRate = 15
 const canvasElement = document.querySelector("canvas")
 const canvasContext = canvasElement.getContext("2d", {

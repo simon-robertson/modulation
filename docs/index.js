@@ -16,7 +16,6 @@ undefined
 
 /**
  * @typedef {object} State
- * @property {number} phase
  * @property {number} time
  * @property {number} timebase
  * @property {boolean} running
@@ -79,7 +78,6 @@ function createModulator(type, frequency, amplitude = 0.8) {
 /** */
 function initialize() {
     let state = {
-        phase: 0,
         time: 0,
         timebase: 0,
         points: [],
@@ -147,33 +145,28 @@ function update(state) {
         return
     }
 
-    if (state.phase >= 60 / canvasFrameRate) {
-        state.phase = 0
-        state.time = (window.performance.now() - state.timebase) * 0.001
+    state.time = (window.performance.now() - state.timebase) * 0.001
 
-        for (let i = 0; i < state.points.length; i ++) {
-            let value = 0.0
-            let phase = (1.0 / state.points.length) * i
+    for (let i = 0; i < state.points.length; i ++) {
+        let value = 0.0
+        let phase = (1.0 / state.points.length) * i
 
-            for (let j = 0; j < state.modulators.length; j ++) {
-                value = value + state.modulators[j].sample(state.time + phase)
-            }
-
-            if (value < -0.9) {
-                value = -0.9
-            } else if (value > 0.9) {
-                value = 0.9
-            }
-
-            state.points[i] = value
+        for (let j = 0; j < state.modulators.length; j ++) {
+            value = value + state.modulators[j].sample(state.time + phase)
         }
 
-        render(state)
+        if (value < -0.9) {
+            value = -0.9
+        } else if (value > 0.9) {
+            value = 0.9
+        }
 
-        infoElement.innerText = state.time.toFixed(2)
+        state.points[i] = value
     }
 
-    state.phase ++
+    render(state)
+
+    infoElement.innerText = state.time.toFixed(2)
 }
 
 /**
@@ -189,7 +182,7 @@ function render(state) {
 
     for (let i = 0; i < state.points.length; i ++) {
         let x = i
-        let y = ((canvasHeight * 0.5) + (canvasHeight * 0.5 * state.points[i])) | 0
+        let y = ((canvasHeight * 0.5) + (canvasHeight * 0.5 * state.points[i]))
 
         if (i === 0) {
             canvasContext.moveTo(x, y)
